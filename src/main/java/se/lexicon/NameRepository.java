@@ -1,5 +1,7 @@
 package se.lexicon;
 
+import java.util.Arrays;
+
 /**
  * The NameRepository class provides methods to manage a list of names.
  * It offers functionalities such as adding, removing, finding, and updating names.
@@ -16,17 +18,19 @@ public class NameRepository {
      */
     public static int getSize() {
         //todo: PART 1: implement getSize method
-        return 0;
+        return names.length;
     }
 
 
     /**
      * Sets the names array to the provided array of names & it should replace all existing names.
      *
-     * @param names The array of names to set.
+     * @param newNames The array of names to set.
      */
-    public static void setNames(String[] names) {
+    public static void setNames(String[] newNames) {
         //todo: PART 1: implement setNames method
+        clear();
+        names = Arrays.copyOf(newNames, newNames.length);
     }
 
 
@@ -35,6 +39,7 @@ public class NameRepository {
      */
     public static void clear() {
         //todo: PART 1: implement clear method
+        names = new String[0];
     }
 
 
@@ -45,7 +50,7 @@ public class NameRepository {
      */
     public static String[] findAll() {
         //todo: PART 1: implement findAll method
-        return null;
+        return Arrays.copyOf(names, names.length);
     }
 
 
@@ -57,7 +62,13 @@ public class NameRepository {
      */
     public static String find(String fullName) {
         //todo: PART 2: implement find method
-        return null;
+        String isFound = null;
+        for (String name : names) {
+            if (name.trim().equalsIgnoreCase(fullName.trim())) {
+                isFound = name.trim();
+            }
+        }
+        return isFound;
     }
 
 
@@ -69,7 +80,32 @@ public class NameRepository {
      */
     public static boolean add(String fullName) {
         //todo: PART 2: implement add method
-        return false;
+        boolean isFound = true;
+        if(fullName == null || (fullName.trim().isEmpty())) {
+            isFound = false;
+        } else {
+            String[] tempNames;
+            int i=0;
+            while(i<names.length) {
+                if(names[i].trim().equalsIgnoreCase(fullName.trim())) {
+                    isFound = false;
+                    break;
+                }
+                i++;
+            }
+            if(isFound) {
+                String newCapitalizedFullname = "";
+                String[] splittedNames = fullName.trim().split(" ");
+                for (String splittedName : splittedNames) {
+                    newCapitalizedFullname = newCapitalizedFullname.concat(splittedName.substring(0, 1).toUpperCase())
+                            .concat(splittedName.substring(1)).concat(" ");
+                }
+                tempNames = Arrays.copyOf(names, names.length+1);
+                tempNames[names.length] = newCapitalizedFullname.trim();
+                names = Arrays.copyOf(tempNames, tempNames.length);
+            }
+        }
+        return isFound;
     }
 
 
@@ -81,7 +117,22 @@ public class NameRepository {
      */
     public static String[] findByFirstName(String firstName) {
         //todo: PART 3: findByFirstName method
-        return null;
+        int matchingFirstNameArrayCounter = 0;
+        String[] matchingFirstNameArray = null;
+        if(firstName != null && (!firstName.trim().isEmpty())) {
+            for (String name : names) {
+                if (name.trim().startsWith(firstName.trim())) {
+                    if (matchingFirstNameArray == null) {
+                        matchingFirstNameArray = new String[1];
+                    } else {
+                        matchingFirstNameArray = Arrays.copyOf(matchingFirstNameArray, matchingFirstNameArray.length + 1);
+                    }
+                    matchingFirstNameArray[matchingFirstNameArrayCounter] = name.trim();
+                    matchingFirstNameArrayCounter++;
+                }
+            }
+        }
+        return matchingFirstNameArray;
     }
 
 
@@ -93,7 +144,22 @@ public class NameRepository {
      */
     public static String[] findByLastName(String lastName) {
         //todo: PART 3: implement findByLastName method
-        return null;
+        int matchingLastNameArrayCounter = 0;
+        String[] matchingLastNameArray = null;
+        if(lastName != null && (!lastName.trim().isEmpty())) {
+            for (String name : names) {
+                if (name.trim().endsWith(lastName.trim())) {
+                    if (matchingLastNameArray == null) {
+                        matchingLastNameArray = new String[1];
+                    } else {
+                        matchingLastNameArray = Arrays.copyOf(matchingLastNameArray, matchingLastNameArray.length + 1);
+                    }
+                    matchingLastNameArray[matchingLastNameArrayCounter] = name.trim();
+                    matchingLastNameArrayCounter++;
+                }
+            }
+        }
+        return matchingLastNameArray;
     }
 
 
@@ -106,7 +172,27 @@ public class NameRepository {
      */
     public static boolean update(String original, String updatedName) {
         //todo: PART 3: implement update method
-        return false;
+        boolean isReplaced = false;
+        boolean isUpdatedNamePresent = false;
+        if(original == null || original.trim().isEmpty() || updatedName == null || updatedName.trim().isEmpty() || original.trim().equalsIgnoreCase(updatedName.trim())) {
+            return isReplaced;
+        } else {
+            for (String name : names) {
+                if (name.trim().equalsIgnoreCase(updatedName.trim())) {
+                    isUpdatedNamePresent = true;
+                    break;
+                }
+            }
+            if(!isUpdatedNamePresent) {
+                for(int i=0; i< names.length; i++) {
+                    if(names[i].trim().equalsIgnoreCase(original.trim())) {
+                        names[i] = updatedName.trim();
+                        isReplaced = true;
+                    }
+                }
+            }
+            return isReplaced;
+        }
     }
 
 
@@ -118,8 +204,17 @@ public class NameRepository {
      */
     public static boolean remove(String fullName) {
         //todo: PART 4: implement remove method
-        return false;
+        boolean isRemoved = false;
+        if(fullName == null || (fullName.trim().isEmpty())) {
+            return isRemoved;
+        } else {
+            for(int i=0; i< names.length; i++) {
+                if(names[i].trim().equalsIgnoreCase(fullName.trim())) {
+                    names[i] = null;
+                    isRemoved = true;
+                }
+            }
+            return isRemoved;
+        }
     }
-
-
 }

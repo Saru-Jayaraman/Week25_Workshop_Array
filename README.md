@@ -1,6 +1,6 @@
 # Workshop – Array & String
 
-You are going to make an application that stores names in a String array with the following format:
+Task is to make an application that stores names in a String array with the following format:
 “Erik Svensson” -> “[first name][whitespace][last name]”.
 
 You may add any number of private helper methods. Remember to keep it simple with focused methods during the workshop.
